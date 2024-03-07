@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Price Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+        }
+
+        #container {
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #totalPrice {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Gold Price Calculator</h1>
+        <form id="goldCalculator">
+            <label for="goldPrice">Gold Price per Gram (INR):</label>
+            <input type="number" id="goldPrice" step="0.01" required><br>
+
+            <label for="grams">Grams:</label>
+            <input type="number" id="grams" step="0.01" required><br>
+
+            <label for="makingType">Making Charge Type:</label>
+            <select id="makingType">
+                <option value="percentage">Percentage (%)</option>
+                <option value="direct">Direct Amount per Gram (INR)</option>
+            </select><br>
+
+            <label for="makingCharge">Making Charge:</label>
+            <input type="number" id="makingCharge" step="0.01" required><br>
+
+            <label for="gst">GST (%):</label>
+            <input type="number" id="gst" step="0.01" required><br>
+
+            <button type="button" onclick="calculatePrice()">Calculate</button>
+        </form>
+
+        <h2 id="totalPrice"></h2>
+    </div>
+
+    <script>
+        function calculatePrice() {
+            var goldPrice = parseFloat(document.getElementById('goldPrice').value);
+            var grams = parseFloat(document.getElementById('grams').value);
+            var makingType = document.getElementById('makingType').value;
+            var makingCharge = parseFloat(document.getElementById('makingCharge').value);
+            var gst = parseFloat(document.getElementById('gst').value);
+
+            var totalGoldPrice = goldPrice * grams;
+            var totalPriceAfterMaking;
+            
+            if (makingType === 'percentage') {
+                totalPriceAfterMaking = totalGoldPrice + (totalGoldPrice * (makingCharge / 100));
+            } else {
+                totalPriceAfterMaking = totalGoldPrice + (makingCharge * grams);
+            }
+            
+            var totalPriceAfterGST = totalPriceAfterMaking + (totalPriceAfterMaking * (gst / 100));
+            var totalPrice = totalPriceAfterGST;
+
+            document.getElementById('totalPrice').innerText = "Total Price: ₹" + totalPrice.toFixed(2);
+        }
+    </script>
+</body>
+</html>
